@@ -87,3 +87,4 @@ lint/tmp/
 # lint/reports/
 gradle
 .idea
+secret
