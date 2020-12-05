@@ -21,7 +21,7 @@ class ItemAdapter(private var dataSet: ArrayList<Item>?): RecyclerView.Adapter<R
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         (viewHolder as ItemViewHolder)
 
-        dataSet.let {
+        dataSet?.let {
             viewHolder.checkBox.text = dataSet?.get(position)?.name ?: ""
             viewHolder.checkBox.isChecked = dataSet?.get(position)?.isBought ?: false
             viewHolder.quantity.text = dataSet?.get(position)?.quantity ?: ""
@@ -29,7 +29,9 @@ class ItemAdapter(private var dataSet: ArrayList<Item>?): RecyclerView.Adapter<R
 
     }
 
-    override fun getItemCount() = dataSet!!.size
+    override fun getItemCount(): Int = dataSet.let {
+        return it?.size ?: 0
+    }
 
     fun getItem(position: Int): Item? {
         return dataSet?.get(position)

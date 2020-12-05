@@ -80,7 +80,7 @@ class MainFragment : Fragment() {
                     return@launch
                 }
                 viewModel.addItem(Item(0, etName.text.toString(), etQuantity.text.toString(), false))
-                rvList.adapter?.notifyItemInserted(rvList.adapter!!.itemCount)
+                rvList.adapter?.itemCount?.let { position -> rvList.adapter?.notifyItemInserted(position) }
                 etName.text.clear()
                 etQuantity.text.clear()
                 context?.hideKeyboard(btnAdd)
