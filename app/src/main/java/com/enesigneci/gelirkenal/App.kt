@@ -11,14 +11,12 @@ class App : Application() {
 
     companion object {
         private var instance: App? = null
-
-        fun applicationContext() : Context {
-            return instance!!.applicationContext
-        }
+        var appContext: Context? = null
+            private set
     }
 
     override fun onCreate() {
         super.onCreate()
-        val context: Context = applicationContext()
+        appContext = this
     }
 }

@@ -13,11 +13,13 @@ abstract class AppDatabase : RoomDatabase() {
         private var INSTANCE: AppDatabase? = null
         fun getInstance(): AppDatabase{
             if (INSTANCE == null){
-                INSTANCE = Room.databaseBuilder(
-                    App.applicationContext(),
-                    AppDatabase::class.java,
-                    "gelirkenal")
-                    .build()
+                INSTANCE = App.appContext?.let {
+                    Room.databaseBuilder(
+                        it,
+                        AppDatabase::class.java,
+                        "gelirkenal")
+                        .build()
+                }
             }
 
             return INSTANCE as AppDatabase
