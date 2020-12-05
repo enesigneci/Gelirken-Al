@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout.VERTICAL
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -70,29 +71,42 @@ class MainFragment : Fragment() {
         viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
             (rvList.adapter as ItemAdapter).setData(it as ArrayList<Item>)
         })
+
         viewModel.loadAd(adView)
         btnAdd.setOnClickListener {
             viewModel.viewModelScope.launch {
                 if (etName.text.isNullOrEmpty()) {
-                    val errorDrawable = context?.let { it -> ContextCompat.getDrawable(it, R.drawable.ic_error) }
-                    errorDrawable?.setBounds(0, 0, errorDrawable.intrinsicWidth, errorDrawable.intrinsicHeight)
-                    etName.setError(getString(R.string.you_must_set_a_name_to_the_product), errorDrawable)
+                    showErrorMessage(etName, getString(R.string.you_must_set_a_name_to_the_product))
                     return@launch
                 }
-                viewModel.addItem(Item(0, etName.text.toString(), etQuantity.text.toString(), false))
-                rvList.adapter?.itemCount?.let { position -> rvList.adapter?.notifyItemInserted(position) }
-                etName.text.clear()
-                etQuantity.text.clear()
-                context?.hideKeyboard(btnAdd)
+                addItemToList(etName.text.toString(), etQuantity.text.toString())
             }
 
         }
 
         btnEnd.setOnClickListener{
-            viewModel.viewModelScope.launch {
-                viewModel.deleteAllItems()
-            }
+            deleteAllItemsFromList()
         }
+    }
+
+    private fun deleteAllItemsFromList() {
+        viewModel.viewModelScope.launch {
+            viewModel.deleteAllItems()
+        }
+    }
+
+    private suspend fun addItemToList(_name: String, _quantity: String) {
+        viewModel.addItem(Item(0, _name, _quantity, false))
+        rvList.adapter?.itemCount?.let { position -> rvList.adapter?.notifyItemInserted(position) }
+        etName.text.clear()
+        etQuantity.text.clear()
+        context?.hideKeyboard(btnAdd)
+    }
+
+    private fun showErrorMessage(editText: EditText, message: String) {
+        val errorDrawable = context?.let { it -> ContextCompat.getDrawable(it, R.drawable.ic_error) }
+        errorDrawable?.setBounds(0, 0, errorDrawable.intrinsicWidth, errorDrawable.intrinsicHeight)
+        editText.setError(message, errorDrawable)
     }
 
 }
