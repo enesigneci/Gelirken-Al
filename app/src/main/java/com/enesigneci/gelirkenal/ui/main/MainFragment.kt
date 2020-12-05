@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
-    var list = mutableListOf<Item>()
+    private var list = mutableListOf<Item>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -48,15 +48,12 @@ class MainFragment : Fragment() {
                 rvList,
                 object : ClickListener {
                     override fun onClick(view: View?, position: Int) {
-                        (rvList.adapter as ItemAdapter).getItem(position)?.let { context?.let { context ->
+                        (rvList.adapter as ItemAdapter).getItem(position)?.let {
                             viewModel.viewModelScope.launch {
                                 (rvList.adapter as ItemAdapter).getItem(position)?.let { item ->
-                                    viewModel.deleteItem(context,
-                                        item
-                                    )
+                                    viewModel.deleteItem(item)
                                 }
                             }
-                        }
                         }
                     }
 
@@ -70,19 +67,19 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        viewModel.getAllItems(requireContext()).observe(viewLifecycleOwner, Observer {
+        viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
             (rvList.adapter as ItemAdapter).setData(it as ArrayList<Item>)
         })
         viewModel.loadAd(adView)
         btnAdd.setOnClickListener {
             viewModel.viewModelScope.launch {
                 if (etName.text.isNullOrEmpty()) {
-                    var errorDrawable = context?.let { it -> ContextCompat.getDrawable(it, R.drawable.ic_error) }
+                    val errorDrawable = context?.let { it -> ContextCompat.getDrawable(it, R.drawable.ic_error) }
                     errorDrawable?.setBounds(0, 0, errorDrawable.intrinsicWidth, errorDrawable.intrinsicHeight)
                     etName.setError(getString(R.string.you_must_set_a_name_to_the_product), errorDrawable)
                     return@launch
                 }
-                viewModel.addItem(requireContext(), Item(0, etName.text.toString(), etQuantity.text.toString(), false))
+                viewModel.addItem(Item(0, etName.text.toString(), etQuantity.text.toString(), false))
                 rvList.adapter?.notifyItemInserted(rvList.adapter!!.itemCount)
                 etName.text.clear()
                 etQuantity.text.clear()
@@ -93,7 +90,7 @@ class MainFragment : Fragment() {
 
         btnEnd.setOnClickListener{
             viewModel.viewModelScope.launch {
-                viewModel.deleteAllItems(requireContext())
+                viewModel.deleteAllItems()
             }
         }
     }

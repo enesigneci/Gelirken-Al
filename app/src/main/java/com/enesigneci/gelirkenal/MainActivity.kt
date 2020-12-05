@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.logo = ResourcesCompat.getDrawable(resources, R.drawable.ic_twotone_shopping_cart_24, theme)
         setSupportActionBar(toolbar)
-        AppDatabase.getInstance(this)
         MobileAds.initialize(this)
     }
 }

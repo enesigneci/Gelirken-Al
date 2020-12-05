@@ -1,6 +1,5 @@
 package com.enesigneci.gelirkenal.ui.main
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.enesigneci.gelirkenal.data.AppDatabase
@@ -9,17 +8,17 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 
 class MainViewModel : ViewModel() {
-    suspend fun addItem(context: Context, item: Item) {
-        AppDatabase.getInstance(context).itemDao().insert(item)
+    suspend fun addItem(item: Item) {
+        AppDatabase.getInstance().itemDao().insert(item)
     }
-    fun getAllItems(context: Context): LiveData<List<Item>> {
-        return AppDatabase.getInstance(context).itemDao().getAll()
+    fun getAllItems(): LiveData<List<Item>> {
+        return AppDatabase.getInstance().itemDao().getAll()
     }
-    suspend fun deleteAllItems(context: Context) {
-        AppDatabase.getInstance(context).itemDao().deleteAllItems()
+    suspend fun deleteAllItems() {
+        AppDatabase.getInstance().itemDao().deleteAllItems()
     }
-    suspend fun deleteItem(context: Context, item: Item) {
-        return AppDatabase.getInstance(context).itemDao().delete(item)
+    suspend fun deleteItem(item: Item) {
+        return AppDatabase.getInstance().itemDao().delete(item)
     }
     fun loadAd(adView: AdView) {
         val adRequest = AdRequest.Builder().build()
