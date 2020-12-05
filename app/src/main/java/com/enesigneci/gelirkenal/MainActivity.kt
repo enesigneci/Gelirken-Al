@@ -14,9 +14,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseCrashlytics.getInstance().sendUnsentReports()
         setContentView(R.layout.main_activity)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.logo = ResourcesCompat.getDrawable(resources, R.drawable.ic_twotone_shopping_cart_24, theme)
-        setSupportActionBar(toolbar)
+
+        setupToolbar()
+
         MobileAds.initialize(this)
+    }
+
+    private fun setupToolbar() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.logo =
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_twotone_shopping_cart_24, theme)
+        setSupportActionBar(toolbar)
     }
 }
