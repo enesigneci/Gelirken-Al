@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_to_list">Add to List</string>
+    <string name="what_do_you_need">What do you need?</string>
+    <string name="things_to_buy">THINGS TO BUY</string>
+    <string name="remove_from_list">Remove from List</string>
+    <string name="end_shopping">End Shopping</string>
+    <string name="quantity">Quantity</string>
+    <string name="you_must_set_a_name_to_the_product">Set a name.</string>
+</resources>
