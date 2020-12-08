@@ -7,4 +7,5 @@
     <string name="end_shopping">End Shopping</string>
     <string name="quantity">Quantity</string>
     <string name="you_must_set_a_name_to_the_product">Set a name.</string>
+    <string name="list_is_empty">Your list is empty</string>
 </resources>

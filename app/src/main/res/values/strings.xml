@@ -7,4 +7,5 @@
     <string name="end_shopping">Alışverişi Bitir</string>
     <string name="quantity">Miktar</string>
     <string name="you_must_set_a_name_to_the_product">İsim girmelisiniz.</string>
+    <string name="list_is_empty">Listeniz boş</string>
 </resources>

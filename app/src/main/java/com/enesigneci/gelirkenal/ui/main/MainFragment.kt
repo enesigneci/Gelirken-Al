@@ -69,6 +69,13 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) {
+                empty_icon.visibility = View.VISIBLE
+                rvList.visibility = View.INVISIBLE
+            } else {
+                empty_icon.visibility = View.INVISIBLE
+                rvList.visibility = View.VISIBLE
+            }
             (rvList.adapter as ItemAdapter).setData(it as ArrayList<Item>)
         })
 
