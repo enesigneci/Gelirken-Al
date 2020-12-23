@@ -67,7 +67,10 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
+        var uri = activity?.intent?.data
+        uri?.let {
+            TODO("Fetch the data by uri from Firebase Realtime Database")
+        }
         viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
                 empty_icon.visibility = View.VISIBLE
