@@ -21,8 +21,8 @@ android {
         applicationId "com.enesigneci.gelirkenal"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 5
-        versionName "1.4"
+        versionCode 6
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,7 +32,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            resValue "string", "ad_id", '"ca-app-pub-6312776416211074/2688659783"'
+            resValue "string", "ad_id", '"ca-app-pub-2090577312338340/5604678724"'
         }
         debug {
             signingConfig signingConfigs.debug
