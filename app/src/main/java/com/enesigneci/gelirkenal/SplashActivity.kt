@@ -11,6 +11,11 @@ class SplashActivity : AppCompatActivity() {
     lateinit var mainActivityIntent: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivityIntent = Intent(this, MainActivity::class.java)
+        var uri = intent.data
+        uri?.let {
+            mainActivityIntent.putExtra("deeplink", it.host)
+        }
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             startActivity(mainActivityIntent)
             finish()
