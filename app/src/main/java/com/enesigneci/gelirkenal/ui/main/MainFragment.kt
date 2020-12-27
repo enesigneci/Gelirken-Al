@@ -1,5 +1,7 @@
 package com.enesigneci.gelirkenal.ui.main
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -7,7 +9,6 @@ import android.widget.EditText
 import android.widget.LinearLayout.VERTICAL
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -73,7 +74,21 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         var uri = activity?.intent?.data
         uri?.let {
-            TODO("Fetch the data by uri from Firebase Realtime Database")
+            uri.path?.let { path ->
+                AlertDialog.Builder(context).setCancelable(false)
+                    .setTitle("Listenizi değiştirmek istiyor musunuz?")
+                    .setMessage("Kendi listenizdeki veriler silinecektir.")
+                    .setPositiveButton("Evet", object : DialogInterface.OnClickListener{
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                viewModel.getAllFromRemote(path)
+                            }
+                        }
+                    })
+                    .setNegativeButton("Hayır", null)
+                    .create()
+                    .show()
+            }
         }
         viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
@@ -84,6 +99,9 @@ class MainFragment : Fragment() {
                 rvList.visibility = View.VISIBLE
             }
             (rvList.adapter as ItemAdapter).setData(it as ArrayList<Item>)
+            val database = FirebaseDatabase.getInstance()
+            val myRef = database.getReference(App.uuid.toString())
+            myRef.setValue(it)
         })
 
         viewModel.loadAd(adView)
@@ -130,14 +148,6 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.itemId
         if (id == R.id.btnShare) {
-            val viewModel: MainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-            viewModel.viewModelScope.launch {
-                val database = FirebaseDatabase.getInstance()
-                val myRef = database.getReference(App.uuid.toString())
-                viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
-                    myRef.setValue(it)
-                })
-            }
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, "gelirkenal://" + App.uuid)

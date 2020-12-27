@@ -1,8 +1,7 @@
 package com.enesigneci.gelirkenal
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
@@ -16,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         FirebaseCrashlytics.getInstance().sendUnsentReports()
         setContentView(R.layout.main_activity)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setupToolbar()
 

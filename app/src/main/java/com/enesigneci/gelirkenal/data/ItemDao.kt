@@ -9,7 +9,7 @@ interface ItemDao {
     @Query("SELECT * FROM item")
     fun getAll(): LiveData<List<Item>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg item: Item)
 
     @Delete
