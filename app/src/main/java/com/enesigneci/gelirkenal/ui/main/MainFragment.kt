@@ -1,26 +1,30 @@
 package com.enesigneci.gelirkenal.ui.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.LinearLayout.VERTICAL
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.enesigneci.gelirkenal.App
 import com.enesigneci.gelirkenal.R
 import com.enesigneci.gelirkenal.data.model.Item
 import com.enesigneci.gelirkenal.ui.main.list.ItemAdapter
 import com.enesigneci.gelirkenal.utils.RecyclerTouchListener
 import com.enesigneci.gelirkenal.utils.RecyclerTouchListener.ClickListener
 import com.enesigneci.gelirkenal.utils.hideKeyboard
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -117,6 +121,38 @@ class MainFragment : Fragment() {
         val errorDrawable = context?.let { it -> ContextCompat.getDrawable(it, R.drawable.ic_error) }
         errorDrawable?.setBounds(0, 0, errorDrawable.intrinsicWidth, errorDrawable.intrinsicHeight)
         editText.setError(message, errorDrawable)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.itemId
+        if (id == R.id.btnShare) {
+            val viewModel: MainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+            viewModel.viewModelScope.launch {
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference(App.uuid.toString())
+                viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
+                    myRef.setValue(it)
+                })
+            }
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "gelirkenal://" + App.uuid)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
 }

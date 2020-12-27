@@ -28,17 +28,4 @@ class MainActivity : AppCompatActivity() {
             ResourcesCompat.getDrawable(resources, R.drawable.ic_twotone_shopping_cart_24, theme)
         setSupportActionBar(toolbar)
     }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id: Int = item.itemId
-        if (id == R.id.btnShare) {
-            // do something here
-        }
-        return super.onOptionsItemSelected(item)
-    }
 }
