@@ -11,6 +11,7 @@ This is an Android application for self shopping list that I made to improve my 
 - **Firebase**
 	- *Crashlytics*: https://firebase.google.com/products/crashlytics
 	- *Analytics*: https://firebase.google.com/docs/analytics
+	- *Realtime Database*: https://firebase.google.com/docs/database
 - **AdMob**: https://admob.google.com
 
 
