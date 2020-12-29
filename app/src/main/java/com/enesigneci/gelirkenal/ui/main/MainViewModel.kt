@@ -43,7 +43,7 @@ class MainViewModel : ViewModel() {
                                 data ->
                                 val itemToInsert = data.getValue(Item::class.java)
                                 viewModelScope.launch {
-                                    addItem(itemToInsert!!)
+                                    itemToInsert?.let { addItem(it) }
                                 }
                             }
                         }
