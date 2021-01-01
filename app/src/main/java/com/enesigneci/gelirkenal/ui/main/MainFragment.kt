@@ -17,12 +17,8 @@ import com.enesigneci.gelirkenal.R
 import com.enesigneci.gelirkenal.data.model.Item
 import com.enesigneci.gelirkenal.ui.component.SwipeToDeleteCallback
 import com.enesigneci.gelirkenal.ui.main.list.ItemAdapter
-import com.enesigneci.gelirkenal.utils.RecyclerTouchListener
-import com.enesigneci.gelirkenal.utils.RecyclerTouchListener.ClickListener
 import com.enesigneci.gelirkenal.utils.hideKeyboard
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -55,24 +51,6 @@ class MainFragment : Fragment() {
 
         val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchhelper.attachToRecyclerView(rvList)
-//        rvList.addOnItemTouchListener(
-//            RecyclerTouchListener(
-//                context,
-//                rvList,
-//                object : ClickListener {
-//                    override fun onClick(view: View?, position: Int) {
-//                        (rvList.adapter as ItemAdapter).getItem(position)?.let {
-//                            viewModel.viewModelScope.launch {
-//                                (rvList.adapter as ItemAdapter).getItem(position)?.let { item ->
-//                                    viewModel.deleteItem(item)
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    override fun onLongClick(view: View?, position: Int) {}
-//                })
-//        )
         rvList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
