@@ -10,11 +10,9 @@ import com.enesigneci.gelirkenal.R
 class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
     val checkBox: CheckBox
     val quantity: TextView
-    val buttonDelete: Button
 
     init {
         checkBox = view.findViewById(R.id.cbName)
         quantity = view.findViewById(R.id.quantity)
-        buttonDelete = view.findViewById(R.id.btnDelete)
     }
 }

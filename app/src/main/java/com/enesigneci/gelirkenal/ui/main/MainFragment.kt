@@ -6,21 +6,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
-import android.widget.LinearLayout.VERTICAL
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enesigneci.gelirkenal.App
 import com.enesigneci.gelirkenal.R
 import com.enesigneci.gelirkenal.data.model.Item
+import com.enesigneci.gelirkenal.ui.component.SwipeToDeleteCallback
 import com.enesigneci.gelirkenal.ui.main.list.ItemAdapter
-import com.enesigneci.gelirkenal.utils.RecyclerTouchListener
-import com.enesigneci.gelirkenal.utils.RecyclerTouchListener.ClickListener
 import com.enesigneci.gelirkenal.utils.hideKeyboard
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -34,8 +32,10 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private var list = mutableListOf<Item>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(R.layout.main_fragment, container, false)
         setupViews(view)
         return view
@@ -45,27 +45,17 @@ class MainFragment : Fragment() {
         val rvList = view.findViewById<RecyclerView>(R.id.rvList)
         rvList.adapter = ItemAdapter(list as ArrayList<Item>?)
 
-        val decoration = DividerItemDecoration(context, VERTICAL)
-        context?.let { ContextCompat.getDrawable(it, R.drawable.divider)?.let { decoration.setDrawable(it) } }
-        rvList.addItemDecoration(decoration)
-        rvList.addOnItemTouchListener(
-            RecyclerTouchListener(
-                context,
-                rvList,
-                object : ClickListener {
-                    override fun onClick(view: View?, position: Int) {
-                        (rvList.adapter as ItemAdapter).getItem(position)?.let {
-                            viewModel.viewModelScope.launch {
-                                (rvList.adapter as ItemAdapter).getItem(position)?.let { item ->
-                                    viewModel.deleteItem(item)
-                                }
-                            }
-                        }
-                    }
+        val swipeToDeleteCallback: SwipeToDeleteCallback = object : SwipeToDeleteCallback(context!!) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
+                val position = viewHolder.absoluteAdapterPosition
+                viewModel.viewModelScope.launch {
+                    (rvList.adapter as ItemAdapter).getItem(position)?.let { viewModel.deleteItem(it) }
+                }
+            }
+        }
 
-                    override fun onLongClick(view: View?, position: Int) {}
-                })
-        )
+        val itemTouchhelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchhelper.attachToRecyclerView(rvList)
         rvList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
