@@ -58,7 +58,6 @@
         android:id="@+id/list"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
         android:background="#F26430"
         android:fontFamily="@font/comfortaa_bold"
         android:gravity="center"
