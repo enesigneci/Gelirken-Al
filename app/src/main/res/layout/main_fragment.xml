@@ -81,7 +81,7 @@
         android:id="@+id/btnEnd"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:fontFamily="@font/nothing_you_could_do"
+        android:fontFamily="@font/ubuntu_medium"
         android:gravity="center"
         android:text="@string/end_shopping"
         android:textAllCaps="true"
