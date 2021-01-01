@@ -8,4 +8,8 @@
     <string name="quantity">Quantity</string>
     <string name="you_must_set_a_name_to_the_product">Set a name.</string>
     <string name="list_is_empty">Your list is empty</string>
+    <string name="do_you_want_to_change_your_list">Do you want to change your list?</string>
+    <string name="all_of_your_list_will_be_deleted">All of your list will be deleted.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

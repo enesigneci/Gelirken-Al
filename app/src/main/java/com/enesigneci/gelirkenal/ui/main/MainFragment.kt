@@ -41,6 +41,27 @@ class MainFragment : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        var data = activity?.intent?.getStringExtra("deeplink")
+        data?.let {
+            AlertDialog.Builder(context).setCancelable(false)
+                .setTitle(getString(R.string.do_you_want_to_change_your_list))
+                .setMessage(getString(R.string.all_of_your_list_will_be_deleted))
+                .setPositiveButton(getString(R.string.yes), object : DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            viewModel.getAllFromRemote(data)
+                        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.no), null)
+                .create()
+                .show()
+        }
+    }
+
     private fun setupViews(view: View) {
         val rvList = view.findViewById<RecyclerView>(R.id.rvList)
         rvList.adapter = ItemAdapter(list as ArrayList<Item>?)
@@ -62,24 +83,7 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        var uri = activity?.intent?.data
-        uri?.let {
-            uri.path?.let { path ->
-                AlertDialog.Builder(context).setCancelable(false)
-                    .setTitle("Listenizi değiştirmek istiyor musunuz?")
-                    .setMessage("Kendi listenizdeki veriler silinecektir.")
-                    .setPositiveButton("Evet", object : DialogInterface.OnClickListener{
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                viewModel.getAllFromRemote(path)
-                            }
-                        }
-                    })
-                    .setNegativeButton("Hayır", null)
-                    .create()
-                    .show()
-            }
-        }
+
         viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
                 empty_icon.visibility = View.VISIBLE

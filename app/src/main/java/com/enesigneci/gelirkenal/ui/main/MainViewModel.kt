@@ -10,6 +10,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.HashMap
 
 class MainViewModel : ViewModel() {
     suspend fun addItem(item: Item) {
@@ -39,12 +41,10 @@ class MainViewModel : ViewModel() {
                         snapshot ->
                         if (snapshot.hasChildren()) {
 
-                            snapshot.children.forEach {
-                                data ->
-                                val itemToInsert = data.getValue(Item::class.java)
-                                viewModelScope.launch {
-                                    itemToInsert?.let { addItem(it) }
-                                }
+                            var map: HashMap<String, Object> = snapshot.value as HashMap<String, Object>
+                            val itemToInsert = Item((map["a"] as Long).toInt(), map["b"] as String, map["c"] as String, map["d"] as Boolean)
+                            viewModelScope.launch {
+                                itemToInsert?.let { addItem(it) }
                             }
                         }
                     }

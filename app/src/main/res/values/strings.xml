@@ -9,4 +9,8 @@
     <string name="you_must_set_a_name_to_the_product">İsim girmelisiniz.</string>
     <string name="list_is_empty">Listeniz boş</string>
     <string name="default_notification_channel_id">default</string>
+    <string name="do_you_want_to_change_your_list">Listenizi değiştirmek istiyor musunuz?</string>
+    <string name="all_of_your_list_will_be_deleted">Kendi listenizdeki veriler silinecektir.</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
 </resources>
