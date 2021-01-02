@@ -144,7 +144,7 @@ class MainFragment : Fragment() {
         if (id == R.id.btnShare) {
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "gelirkenal://" + App.uuid)
+                putExtra(Intent.EXTRA_TEXT, "https://gelirken-al-deeplink.web.app/?data=" + App.uuid)
                 type = "text/plain"
             }
 
