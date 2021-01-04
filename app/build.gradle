@@ -32,7 +32,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            resValue "string", "ad_id", '"ca-app-pub-2090577312338340/5604678724"'
+            resValue "string", "ad_id", '"ca-app-pub-9406267063685764/2663401176"'
         }
         debug {
             signingConfig signingConfigs.debug
