@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.enesigneci.gelirkenal.App
 import com.enesigneci.gelirkenal.R
 import com.enesigneci.gelirkenal.data.model.Item
+import com.enesigneci.gelirkenal.databinding.MainFragmentBinding
 import com.enesigneci.gelirkenal.ui.component.SwipeToDeleteCallback
 import com.enesigneci.gelirkenal.ui.main.list.ItemAdapter
 import com.enesigneci.gelirkenal.utils.hideKeyboard
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,12 +31,15 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private var list = mutableListOf<Item>()
+    private var _binding: MainFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.main_fragment, container, false)
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        val view = binding.root
         setupViews(view)
         return view
     }
@@ -63,10 +66,10 @@ class MainFragment : Fragment() {
     }
 
     private fun setupViews(view: View) {
-        val rvList = view.findViewById<RecyclerView>(R.id.rvList)
+        val rvList = MainFragmentBinding.bind(view).rvList
         rvList.adapter = ItemAdapter(list as ArrayList<Item>?)
 
-        val swipeToDeleteCallback: SwipeToDeleteCallback = object : SwipeToDeleteCallback(context!!) {
+        val swipeToDeleteCallback: SwipeToDeleteCallback = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
                 val position = viewHolder.absoluteAdapterPosition
                 viewModel.viewModelScope.launch {
@@ -86,31 +89,31 @@ class MainFragment : Fragment() {
 
         viewModel.getAllItems().observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
-                empty_icon.visibility = View.VISIBLE
-                rvList.visibility = View.INVISIBLE
+                binding.emptyIcon.visibility = View.VISIBLE
+                binding.rvList.visibility = View.INVISIBLE
             } else {
-                empty_icon.visibility = View.INVISIBLE
-                rvList.visibility = View.VISIBLE
+                binding.emptyIcon.visibility = View.INVISIBLE
+                binding.rvList.visibility = View.VISIBLE
             }
-            (rvList.adapter as ItemAdapter).setData(it as ArrayList<Item>)
+            (binding.rvList.adapter as ItemAdapter).setData(it as ArrayList<Item>)
             val database = FirebaseDatabase.getInstance()
             val myRef = database.getReference(App.uuid.toString())
             myRef.setValue(it)
         })
 
-        viewModel.loadAd(adView)
-        btnAdd.setOnClickListener {
+        viewModel.loadAd(binding.adView)
+        binding.btnAdd.setOnClickListener {
             viewModel.viewModelScope.launch {
-                if (etName.text.isNullOrEmpty()) {
-                    showErrorMessage(etName, getString(R.string.you_must_set_a_name_to_the_product))
+                if (binding.etName.text.isNullOrEmpty()) {
+                    showErrorMessage(binding.etName, getString(R.string.you_must_set_a_name_to_the_product))
                     return@launch
                 }
-                addItemToList(etName.text.toString(), etQuantity.text.toString())
+                addItemToList(binding.etName.text.toString(), binding.etQuantity.text.toString())
             }
 
         }
 
-        btnEnd.setOnClickListener{
+        binding.btnEnd.setOnClickListener{
             deleteAllItemsFromList()
         }
     }
@@ -123,10 +126,10 @@ class MainFragment : Fragment() {
 
     private suspend fun addItemToList(_name: String, _quantity: String) {
         viewModel.addItem(Item(0, _name, _quantity, false))
-        rvList.adapter?.itemCount?.let { position -> rvList.adapter?.notifyItemInserted(position) }
-        etName.text.clear()
-        etQuantity.text.clear()
-        context?.hideKeyboard(btnAdd)
+        binding.rvList.adapter?.itemCount?.let { position -> binding.rvList.adapter?.notifyItemInserted(position) }
+        binding.etName.text.clear()
+        binding.etQuantity.text.clear()
+        context?.hideKeyboard(binding.btnAdd)
     }
 
     private fun showErrorMessage(editText: EditText, message: String) {
@@ -157,6 +160,11 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
