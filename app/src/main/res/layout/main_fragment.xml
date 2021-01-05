@@ -18,9 +18,10 @@
         android:fontFamily="@font/ubuntu_medium"
         android:hint="@string/what_do_you_need"
         android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/list"
         app:layout_constraintEnd_toStartOf="@+id/etQuantity"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,8 +32,8 @@
         android:background="@drawable/et"
         android:fontFamily="@font/ubuntu_medium"
         android:hint="@string/quantity"
-        android:maxLines="1"
         android:maxLength="8"
+        android:maxLines="1"
         android:textSize="12dp"
         app:layout_constraintBottom_toTopOf="@+id/list"
         app:layout_constraintEnd_toStartOf="@+id/btnAdd"
@@ -106,10 +107,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/list_is_empty"
+        app:drawableTopCompat="@drawable/ic_baseline_error_outline_24"
         app:layout_constraintBottom_toBottomOf="@+id/rvList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/rvList"
-        app:layout_constraintTop_toTopOf="@+id/rvList"
-        app:drawableTopCompat="@drawable/ic_baseline_error_outline_24" />
+        app:layout_constraintTop_toTopOf="@+id/rvList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
