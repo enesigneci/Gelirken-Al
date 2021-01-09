@@ -42,7 +42,7 @@ class MainViewModel : ViewModel() {
                         if (snapshot.hasChildren()) {
 
                             var map: HashMap<String, Object> = snapshot.value as HashMap<String, Object>
-                            val itemToInsert = Item((map["a"] as Long).toInt(), map["b"] as String, map["c"] as String, map["d"] as Boolean)
+                            val itemToInsert = Item((map["id"] as Long).toInt(), map["name"] as String, map["quantity"] as String, map["bought"] as Boolean)
                             viewModelScope.launch {
                                 itemToInsert?.let { addItem(it) }
                             }
